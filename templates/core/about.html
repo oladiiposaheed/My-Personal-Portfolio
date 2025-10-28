@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - {{ profile.user.get_full_name|default:"Full Stack AI Engineer" }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="h2 fw-bold text-light mb-3">About Me</h1>
+        <p class="text-light-emphasis">My journey, skills, and passion for technology</p>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-4 text-center mb-4 mb-md-0">
+            {% if profile and profile.profile_image %}
+            <img src="{{ profile.get_profile_image_url }}" 
+                 alt="{{ profile.user.get_full_name }}" 
+                 class="img-fluid rounded-circle about-profile-img">
+            {% else %}
+            <div class="about-profile-placeholder rounded-circle mx-auto">
+                <i class="fas fa-user text-primary"></i>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h2 class="h4 fw-bold text-light mb-2">
+                {% if profile and profile.user.get_full_name %}
+                    {{ profile.user.get_full_name }}
+                {% else %}
+                    Full Stack AI Engineer
+                {% endif %}
+            </h2>
+            <p class="text-primary mb-3 fw-semibold">
+                {% if profile and profile.title %}
+                    {{ profile.title }}
+                {% else %}
+                    AI & Machine Learning Specialist
+                {% endif %}
+            </p>
+            <div class="about-content">
+                {% if profile and profile.about_me %}
+                    {{ profile.about_me|linebreaks }}
+                {% else %}
+                    <p class="text-light-emphasis mb-3">
+                        I'm a passionate Full Stack AI Engineer with expertise in building intelligent 
+                        applications that bridge the gap between cutting-edge AI research and practical 
+                        software solutions.
+                    </p>
+                    <p class="text-light-emphasis mb-0">
+                        With a strong foundation in machine learning, deep learning, and full-stack 
+                        development, I specialize in creating end-to-end AI solutions that are scalable, 
+                        maintainable, and user-friendly.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="h4 text-center text-light mb-4">Technical Expertise</h3>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="skill-item p-3 text-center">
+                <div class="skill-icon mb-3">
+                    <i class="fas fa-brain text-primary"></i>
+                </div>
+                <h5 class="fw-semibold text-light mb-2">AI & Machine Learning</h5>
+                <p class="text-light-emphasis small mb-0">
+                    TensorFlow, PyTorch, Scikit-learn, Computer Vision, NLP
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="skill-item p-3 text-center">
+                <div class="skill-icon mb-3">
+                    <i class="fas fa-server text-success"></i>
+                </div>
+                <h5 class="fw-semibold text-light mb-2">Backend Development</h5>
+                <p class="text-light-emphasis small mb-0">
+                    Python, Django, FastAPI, PostgreSQL, MongoDB, Docker
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="skill-item p-3 text-center">
+                <div class="skill-icon mb-3">
+                    <i class="fas fa-code text-info"></i>
+                </div>
+                <h5 class="fw-semibold text-light mb-2">Frontend & DevOps</h5>
+                <p class="text-light-emphasis small mb-0">
+                    React, JavaScript, AWS, CI/CD, Bootstrap, TypeScript
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experience Section -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="h4 text-center text-light mb-4">Professional Journey</h3>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="experience-item p-3">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="fw-semibold text-light mb-0">Full Stack AI Engineer</h5>
+                    <span class="badge bg-primary">2024 - Present</span>
+                </div>
+                <p class="text-light-emphasis small mb-0">
+                    Building intelligent applications and AI solutions. Specializing in end-to-end development from concept to deployment.
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="experience-item p-3">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="fw-semibold text-light mb-0">Machine Learning Engineer</h5>
+                    <span class="badge bg-primary">2022 - 2024</span>
+                </div>
+                <p class="text-light-emphasis small mb-0">
+                    Developed and deployed machine learning models for production environments. Worked on computer vision and NLP projects.
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="experience-item p-3">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="fw-semibold text-light mb-0">Software Developer</h5>
+                    <span class="badge bg-primary">2020 - 2022</span>
+                </div>
+                <p class="text-light-emphasis small mb-0">
+                    Full-stack web development with focus on scalable applications. Built REST APIs and database architectures.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center mt-5">
+        <div class="cta-section p-4">
+            <h4 class="text-light mb-3">Let's Build Something Amazing</h4>
+            <p class="text-light-emphasis small mb-3">
+                Interested in working together? I'm always open to discussing new opportunities.
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                <a href="{% url 'core:contact' %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-paper-plane me-1"></i>Get In Touch
+                </a>
+                <a href="{% url 'projects:project_list' %}" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-code me-1"></i>View Projects
+                </a>
+                {% if profile and profile.resume %}
+                <a href="{{ profile.resume.url }}" class="btn btn-outline-primary btn-sm" target="_blank">
+                    <i class="fas fa-download me-1"></i>Resume
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* About Page Styles */
+.about-profile-img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border: 3px solid rgba(99, 102, 241, 0.3);
+}
+
+.about-profile-placeholder {
+    width: 180px;
+    height: 180px;
+    background: rgba(99, 102, 241, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid rgba(99, 102, 241, 0.3);
+}
+
+.about-profile-placeholder i {
+    font-size: 3rem;
+}
+
+.about-content {
+    line-height: 1.6;
+}
+
+.about-content p {
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+/* Skill Items */
+.skill-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.skill-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(99, 102, 241, 0.5);
+}
+
+.skill-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.skill-icon i {
+    font-size: 1.5rem;
+}
+
+/* Experience Items */
+.experience-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.experience-item:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-1px);
+}
+
+/* CTA Section */
+.cta-section {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Text Sizes */
+.h2 { font-size: 1.75rem; }
+.h3 { font-size: 1.5rem; }
+.h4 { font-size: 1.25rem; }
+.h5 { font-size: 1.1rem; }
+
+/* Spacing */
+.container {
+    max-width: 900px;
+}
+
+.row {
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.col-md-4, .col-md-6, .col-md-8, .col-12 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Badge Sizes */
+.badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Button Sizes */
+.btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-profile-img,
+    .about-profile-placeholder {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .about-profile-placeholder i {
+        font-size: 2rem;
+    }
+    
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+</style>
+{% endblock %}

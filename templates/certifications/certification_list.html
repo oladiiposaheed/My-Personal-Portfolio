@@ -1,0 +1,342 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Certifications - {{ profile.user.get_full_name|default:"Full Stack AI Engineer" }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <!-- Page Header -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold mb-3 text-light">My Certifications</h1>
+            <p class="lead text-light-emphasis">
+                Professional certifications and qualifications in AI, machine learning, and software development
+            </p>
+        </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card glass-effect p-4">
+                <div class="row g-3 align-items-end">
+                    <!-- Issuer Filter -->
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold text-light">Filter by Issuer</label>
+                        <select class="form-select bg-dark text-light border-secondary" onchange="updateFilter('issuer', this.value)">
+                            <option value="all">All Issuers</option>
+                            {% for issuer_code, issuer_name in issuer_choices %}
+                            <option value="{{ issuer_code }}" 
+                                    {% if selected_issuer == issuer_code %}selected{% endif %}>
+                                {{ issuer_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Level Filter -->
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold text-light">Filter by Level</label>
+                        <select class="form-select bg-dark text-light border-secondary" onchange="updateFilter('level', this.value)">
+                            <option value="all">All Levels</option>
+                            {% for level_code, level_name in level_choices %}
+                            <option value="{{ level_code }}" 
+                                    {% if selected_level == level_code %}selected{% endif %}>
+                                {{ level_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Search -->
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold text-light">Search Certifications</label>
+                        <form method="get" class="d-flex">
+                            <input type="text" 
+                                   name="q" 
+                                   class="form-control bg-dark text-light border-secondary" 
+                                   placeholder="Search certifications..." 
+                                   value="{{ search_query }}">
+                            <button type="submit" class="btn btn-primary ms-2">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Reset -->
+                    <div class="col-md-1">
+                        <a href="{% url 'certifications:certification_list' %}" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-refresh"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certifications Grid -->
+    <div class="row">
+        {% for certification in certifications %}
+        <div class="col-lg-4 col-md-6 mb-4 fade-in">
+            <div class="card certification-card h-100 glass-effect">
+                <!-- Certification Header -->
+                <div class="card-header bg-transparent border-secondary pb-0">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="issuer-icon bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                             style="width: 60px; height: 60px;">
+                            <i class="{{ certification.get_issuer_icon }} fa-2x text-primary"></i>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge {{ certification.get_level_badge_class }} mb-1">
+                                {{ certification.get_level_display }}
+                            </span>
+                            {% if certification.featured %}
+                            <span class="badge bg-warning">
+                                <i class="fas fa-star me-1"></i>Featured
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body d-flex flex-column">
+                    <!-- Certification Image/Badge -->
+                    <div class="text-center mb-4">
+                        {% if certification.image %}
+                        <img src="{{ certification.image.url }}" 
+                             class="certification-image img-fluid rounded" 
+                             alt="{{ certification.title }}"
+                             style="max-height: 120px; object-fit: contain;">
+                        {% else %}
+                        <div class="certification-placeholder bg-gradient-primary rounded d-inline-flex align-items-center justify-content-center p-4"
+                             style="width: 140px; height: 140px;">
+                            <i class="fas fa-certificate fa-3x text-white"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Certification Title -->
+                    <h5 class="card-title fw-bold text-light text-center mb-2">{{ certification.title }}</h5>
+                    
+                    <!-- Issuer -->
+                    <p class="text-primary text-center mb-3">
+                        <i class="fas fa-building me-2"></i>
+                        {{ certification.get_issuer_display_name }}
+                    </p>
+                    
+                    <!-- Description -->
+                    <p class="card-text text-light-emphasis text-center small flex-grow-1">
+                        {{ certification.description|truncatewords:25 }}
+                    </p>
+                    
+                    <!-- Dates & Status -->
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between align-items-center text-light-emphasis small mb-3">
+                            <span>
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ certification.issue_date|date:"M Y" }}
+                            </span>
+                            {% if certification.expiration_date %}
+                            <span class="{% if certification.is_expired %}text-danger{% else %}text-warning{% endif %}">
+                                <i class="fas fa-clock me-1"></i>
+                                {{ certification.expiration_date|date:"M Y" }}
+                            </span>
+                            {% else %}
+                            <span class="text-success">
+                                <i class="fas fa-infinity"></i> No expiry
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Status Indicator -->
+                        {% if certification.is_expired %}
+                        <div class="alert alert-danger small mb-0 text-center py-2">
+                            <i class="fas fa-exclamation-triangle me-1"></i>Certificate Expired
+                        </div>
+                        {% elif certification.days_until_expiry and certification.days_until_expiry < 90 %}
+                        <div class="alert alert-warning small mb-0 text-center py-2">
+                            <i class="fas fa-clock me-1"></i>Expires in {{ certification.days_until_expiry }} days
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Card Footer with Actions -->
+                <div class="card-footer bg-transparent border-top border-secondary pt-3">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'certifications:certification_detail' certification.slug %}" 
+                           class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>View Details
+                        </a>
+                        <div class="d-flex gap-1">
+                            <a href="{{ certification.credential_url }}" 
+                               target="_blank" 
+                               class="btn btn-outline-success btn-sm flex-fill">
+                                <i class="fas fa-external-link-alt me-1"></i>Verify
+                            </a>
+                            {% if certification.certificate_id %}
+                            <button class="btn btn-outline-info btn-sm flex-fill" 
+                                    onclick="copyToClipboard('{{ certification.certificate_id }}')"
+                                    title="Copy Certificate ID">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5 fade-in">
+            <div class="card glass-effect p-5">
+                <div class="empty-state">
+                    <i class="fas fa-certificate fa-4x text-primary mb-3"></i>
+                    <h3 class="text-light mb-3">No Certifications Found</h3>
+                    <p class="text-light-emphasis mb-4">
+                        {% if search_query or selected_issuer or selected_level %}
+                        Try adjusting your filters or search terms to find what you're looking for.
+                        {% else %}
+                        Professional certifications will be displayed here once they are added.
+                        {% endif %}
+                    </p>
+                    {% if search_query or selected_issuer or selected_level %}
+                    <a href="{% url 'certifications:certification_list' %}" class="btn btn-primary">
+                        <i class="fas fa-list me-2"></i>View All Certifications
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateFilter(type, value) {
+    const url = new URL(window.location.href);
+    
+    if (value === 'all') {
+        url.searchParams.delete(type);
+    } else {
+        url.searchParams.set(type, value);
+    }
+    
+    window.location.href = url.toString();
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show success message
+        const btn = event.target.closest('button');
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        btn.classList.remove('btn-outline-info');
+        btn.classList.add('btn-success');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-info');
+        }, 2000);
+    }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+        alert('Failed to copy to clipboard');
+    });
+}
+
+// Enhanced card interactions
+document.addEventListener('DOMContentLoaded', function() {
+    const certCards = document.querySelectorAll('.certification-card');
+    
+    certCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+            const img = this.querySelector('.certification-image');
+            if (img) {
+                img.style.transform = 'scale(1.1)';
+            }
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+            const img = this.querySelector('.certification-image');
+            if (img) {
+                img.style.transform = 'scale(1)';
+            }
+        });
+    });
+});
+</script>
+
+<style>
+.certification-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.certification-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 0 1px var(--primary-color),
+        0 0 30px rgba(99, 102, 241, 0.3);
+}
+
+.certification-image {
+    transition: transform 0.4s ease;
+}
+
+.certification-placeholder {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+}
+
+.issuer-icon {
+    transition: all 0.3s ease;
+}
+
+.issuer-icon:hover {
+    transform: scale(1.1) rotate(5deg);
+    background: rgba(99, 102, 241, 0.2) !important;
+}
+
+.empty-state {
+    opacity: 0.8;
+}
+
+.alert {
+    border: none;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border-left: 4px solid #ef4444;
+}
+
+.alert-warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fdba74;
+    border-left: 4px solid #f59e0b;
+}
+
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.form-select, .form-control {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+}
+</style>
+{% endblock %}

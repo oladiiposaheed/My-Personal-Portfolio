@@ -1,0 +1,442 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ certification.title }} - {{ profile.user.get_full_name|default:"Full Stack AI Engineer" }}{% endblock %}
+
+{% block meta_description %}{{ certification.meta_description|default:certification.description }}{% endblock %}
+{% block meta_keywords %}{{ certification.meta_keywords|default:"certification, credential, AI, machine learning, professional development" }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <!-- Back Button -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <a href="{% url 'certifications:certification_list' %}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Certifications
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Certification Header -->
+            <div class="card glass-effect mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between mb-4">
+                        <div>
+                            <h1 class="display-5 fw-bold text-light mb-2">{{ certification.title }}</h1>
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="issuer-badge bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                     style="width: 60px; height: 60px;">
+                                    <i class="{{ certification.get_issuer_icon }} fa-2x text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-primary mb-1">{{ certification.get_issuer_display_name }}</h4>
+                                    <span class="badge {{ certification.get_level_badge_class }} fs-6">
+                                        {{ certification.get_level_display }} Level
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column gap-2 text-end">
+                            {% if certification.featured %}
+                            <span class="badge bg-warning fs-6">
+                                <i class="fas fa-star me-1"></i>Featured
+                            </span>
+                            {% endif %}
+                            {% if certification.is_expired %}
+                            <span class="badge bg-danger fs-6">
+                                <i class="fas fa-exclamation-triangle me-1"></i>Expired
+                            </span>
+                            {% elif certification.is_expiring_soon %}
+                            <span class="badge bg-warning fs-6">
+                                <i class="fas fa-clock me-1"></i>Expiring Soon
+                            </span>
+                            {% else %}
+                            <span class="badge bg-success fs-6">
+                                <i class="fas fa-check-circle me-1"></i>Valid
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="info-card bg-dark bg-opacity-50 rounded p-3 mb-3">
+                                <h6 class="text-primary mb-2">
+                                    <i class="fas fa-calendar me-2"></i>Issue Date
+                                </h6>
+                                <p class="text-light mb-0">{{ certification.issue_date|date:"F j, Y" }}</p>
+                                <small class="text-light-emphasis">({{ certification.years_since_issue }} year{{ certification.years_since_issue|pluralize }} ago)</small>
+                            </div>
+                            
+                            <div class="info-card bg-dark bg-opacity-50 rounded p-3">
+                                <h6 class="text-primary mb-2">
+                                    <i class="fas fa-building me-2"></i>Issuing Organization
+                                </h6>
+                                <p class="text-light mb-0">{{ certification.get_issuer_display_name }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            {% if certification.expiration_date %}
+                            <div class="info-card bg-dark bg-opacity-50 rounded p-3 mb-3">
+                                <h6 class="{% if certification.is_expired %}text-danger{% elif certification.is_expiring_soon %}text-warning{% else %}text-success{% endif %} mb-2">
+                                    <i class="fas fa-clock me-2"></i>Expiration Date
+                                </h6>
+                                <p class="text-light mb-0">{{ certification.expiration_date|date:"F j, Y" }}</p>
+                                {% if certification.days_until_expiry %}
+                                <small class="{% if certification.days_until_expiry < 0 %}text-danger{% elif certification.days_until_expiry < 90 %}text-warning{% else %}text-success{% endif %}">
+                                    {% if certification.days_until_expiry < 0 %}
+                                    (Expired {{ certification.days_until_expiry|abs }} days ago)
+                                    {% else %}
+                                    ({{ certification.days_until_expiry }} days remaining)
+                                    {% endif %}
+                                </small>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            
+                            {% if certification.certificate_id %}
+                            <div class="info-card bg-dark bg-opacity-50 rounded p-3">
+                                <h6 class="text-primary mb-2">
+                                    <i class="fas fa-id-card me-2"></i>Certificate ID
+                                </h6>
+                                <div class="d-flex align-items-center gap-2">
+                                    <code class="text-light flex-grow-1">{{ certification.certificate_id }}</code>
+                                    <button class="btn btn-outline-info btn-sm" 
+                                            onclick="copyToClipboard('{{ certification.certificate_id }}')"
+                                            title="Copy Certificate ID">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="{{ certification.credential_url }}" target="_blank" class="btn btn-primary btn-lg">
+                            <i class="fas fa-external-link-alt me-2"></i>Verify Credential
+                        </a>
+                        <button onclick="window.print()" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-print me-2"></i>Print Certificate
+                        </button>
+                        {% if certification.is_expired %}
+                        <span class="btn btn-outline-danger btn-lg disabled">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Certificate Expired
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certification Description -->
+            <div class="card glass-effect mb-4">
+                <div class="card-body">
+                    <h3 class="card-title mb-4 text-light">
+                        <i class="fas fa-info-circle me-2 text-primary"></i>About This Certification
+                    </h3>
+                    <div class="certification-description text-light opacity-90">
+                        {{ certification.description|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Gained -->
+            {% if skills_list %}
+            <div class="card glass-effect">
+                <div class="card-body">
+                    <h3 class="card-title mb-4 text-light">
+                        <i class="fas fa-tools me-2 text-primary"></i>Skills & Technologies
+                    </h3>
+                    <div class="skills-grid">
+                        {% for skill in skills_list %}
+                        <span class="skill-badge bg-success bg-opacity-20 text-success border border-success">
+                            <i class="fas fa-check me-2"></i>{{ skill }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Certification Badge -->
+            <div class="card glass-effect mb-4">
+                <div class="card-body text-center">
+                    {% if certification.image %}
+                    <img src="{{ certification.image.url }}" 
+                         alt="{{ certification.title }}" 
+                         class="img-fluid mb-4 certification-badge-image"
+                         style="max-height: 200px; object-fit: contain;">
+                    {% else %}
+                    <div class="certification-badge-placeholder bg-gradient-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-4"
+                         style="width: 200px; height: 200px;">
+                        <i class="fas fa-certificate fa-4x text-white"></i>
+                    </div>
+                    {% endif %}
+                    <h5 class="fw-bold text-light">{{ certification.get_issuer_display_name }}</h5>
+                    <p class="text-muted">Issued {{ certification.issue_date|date:"F Y" }}</p>
+                    
+                    {% if certification.is_expired %}
+                    <div class="alert alert-danger mt-3">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        This certificate has expired
+                    </div>
+                    {% elif certification.is_expiring_soon %}
+                    <div class="alert alert-warning mt-3">
+                        <i class="fas fa-clock me-2"></i>
+                        Expires in {{ certification.days_until_expiry }} days
+                    </div>
+                    {% else %}
+                    <div class="alert alert-success mt-3">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Certificate is valid
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Facts -->
+            <div class="card glass-effect mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-4 text-light">
+                        <i class="fas fa-list-alt me-2 text-primary"></i>Certification Details
+                    </h5>
+                    <div class="facts-list">
+                        <div class="fact-item d-flex align-items-center mb-3">
+                            <div class="fact-icon bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-building text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1 text-light">Issuer</h6>
+                                <p class="mb-0 text-muted">{{ certification.get_issuer_display_name }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="fact-item d-flex align-items-center mb-3">
+                            <div class="fact-icon bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-calendar text-success"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1 text-light">Issued</h6>
+                                <p class="mb-0 text-muted">{{ certification.issue_date|date:"M j, Y" }}</p>
+                            </div>
+                        </div>
+                        
+                        {% if certification.expiration_date %}
+                        <div class="fact-item d-flex align-items-center mb-3">
+                            <div class="fact-icon {% if certification.is_expired %}bg-danger{% elif certification.is_expiring_soon %}bg-warning{% else %}bg-success{% endif %} bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-clock {% if certification.is_expired %}text-danger{% elif certification.is_expiring_soon %}text-warning{% else %}text-success{% endif %}"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1 text-light">Expires</h6>
+                                <p class="mb-0 text-muted">{{ certification.expiration_date|date:"M j, Y" }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="fact-item d-flex align-items-center mb-3">
+                            <div class="fact-icon bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-chart-line text-info"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1 text-light">Level</h6>
+                                <p class="mb-0 text-muted">{{ certification.get_level_display }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Certifications -->
+            {% if related_certifications %}
+            <div class="card glass-effect">
+                <div class="card-body">
+                    <h5 class="card-title mb-3 text-light">
+                        <i class="fas fa-certificate me-2 text-primary"></i>Related Certifications
+                    </h5>
+                    <div class="list-group list-group-flush">
+                        {% for related in related_certifications %}
+                        <a href="{% url 'certifications:certification_detail' related.slug %}" 
+                           class="list-group-item list-group-item-action bg-transparent text-light border-secondary hover-lift">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 small">{{ related.title }}</h6>
+                                <small class="text-muted">{{ related.issue_date|date:"Y" }}</small>
+                            </div>
+                            <small class="text-primary">{{ related.get_issuer_display_name }}</small>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show success message
+        const btn = event.target.closest('button');
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        btn.classList.remove('btn-outline-info');
+        btn.classList.add('btn-success');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-info');
+        }, 2000);
+    }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+        alert('Failed to copy text to clipboard');
+    });
+}
+
+// Enhanced interactions
+document.addEventListener('DOMContentLoaded', function() {
+    // Skill badges hover effect
+    const skillBadges = document.querySelectorAll('.skill-badge');
+    skillBadges.forEach(badge => {
+        badge.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px) scale(1.05)';
+            this.style.boxShadow = '0 5px 15px rgba(16, 185, 129, 0.3)';
+        });
+        
+        badge.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.boxShadow = 'none';
+        });
+    });
+    
+    // Issuer badge animation
+    const issuerBadge = document.querySelector('.issuer-badge');
+    if (issuerBadge) {
+        issuerBadge.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.1) rotate(5deg)';
+        });
+        
+        issuerBadge.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1) rotate(0)';
+        });
+    }
+});
+</script>
+
+<style>
+.certification-badge-image {
+    transition: transform 0.3s ease;
+}
+
+.certification-badge-image:hover {
+    transform: scale(1.05);
+}
+
+.certification-badge-placeholder {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    box-shadow: 0 15px 40px rgba(99, 102, 241, 0.3);
+}
+
+.issuer-badge {
+    transition: all 0.3s ease;
+}
+
+.info-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.info-card:hover {
+    border-left-color: var(--primary-color);
+    transform: translateX(5px);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.skill-badge {
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.fact-item {
+    transition: all 0.3s ease;
+}
+
+.fact-item:hover {
+    transform: translateX(5px);
+}
+
+.fact-icon {
+    transition: all 0.3s ease;
+}
+
+.fact-item:hover .fact-icon {
+    transform: scale(1.1);
+    background: rgba(99, 102, 241, 0.2) !important;
+}
+
+.hover-lift {
+    transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.alert {
+    border: none;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border-left: 4px solid #ef4444;
+}
+
+.alert-warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fdba74;
+    border-left: 4px solid #f59e0b;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.2);
+    color: #a7f3d0;
+    border-left: 4px solid #10b981;
+}
+
+/* Print styles */
+@media print {
+    .btn, .navbar, footer {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        background: white !important;
+        color: black !important;
+    }
+}
+</style>
+{% endblock %}

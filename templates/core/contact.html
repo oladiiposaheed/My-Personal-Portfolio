@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact - {{ profile.user.get_full_name|default:"Full Stack AI Engineer" }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="h2 fw-bold text-light mb-3">Get In Touch</h1>
+        <p class="text-light-emphasis">Let's discuss your project and bring your ideas to life</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="row">
+                <!-- Contact Form -->
+                <div class="col-md-7 mb-4">
+                    <div class="contact-form p-4">
+                        <h3 class="h4 text-light mb-4">
+                            <i class="fas fa-paper-plane text-primary me-2"></i>Send Message
+                        </h3>
+                        
+                        {% if messages %}
+                        <div class="mb-4">
+                            {% for message in messages %}
+                            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %} small mb-3">
+                                <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %} me-2"></i>
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <form method="post" action="{% url 'core:contact' %}">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-light-emphasis small fw-semibold">Your Name *</label>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ form.name.errors.0 }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-light-emphasis small fw-semibold">Your Email *</label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ form.email.errors.0 }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label text-light-emphasis small fw-semibold">Subject *</label>
+                                {{ form.subject }}
+                                {% if form.subject.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.subject.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label text-light-emphasis small fw-semibold">Your Message *</label>
+                                {{ form.message }}
+                                {% if form.message.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.message.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="col-md-5">
+                    <div class="contact-info">
+                        <h3 class="h4 text-light mb-4">
+                            <i class="fas fa-envelope text-primary me-2"></i>Contact Info
+                        </h3>
+                        
+                        {% if profile and profile.email %}
+                        <div class="contact-item d-flex align-items-center mb-3 p-3">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-envelope text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-light small fw-semibold mb-1">Email</h6>
+                                <p class="text-light-emphasis small mb-0">{{ profile.email }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if profile and profile.phone %}
+                        <div class="contact-item d-flex align-items-center mb-3 p-3">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-phone text-success"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-light small fw-semibold mb-1">Phone</h6>
+                                <p class="text-light-emphasis small mb-0">{{ profile.phone }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if profile and profile.address %}
+                        <div class="contact-item d-flex align-items-center mb-3 p-3">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-map-marker-alt text-info"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-light small fw-semibold mb-1">Location</h6>
+                                <p class="text-light-emphasis small mb-0">{{ profile.address }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Social Links -->
+                        <div class="social-section mt-4">
+                            <h4 class="h5 text-light mb-3">Follow Me</h4>
+                            <div class="d-flex gap-2">
+                                {% if profile and profile.github_url %}
+                                <a href="{{ profile.github_url }}" target="_blank" class="social-btn">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                {% endif %}
+                                
+                                {% if profile and profile.linkedin_url %}
+                                <a href="{{ profile.linkedin_url }}" target="_blank" class="social-btn">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                                {% endif %}
+                                
+                                {% if profile and profile.twitter_url %}
+                                <a href="{{ profile.twitter_url }}" target="_blank" class="social-btn">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                {% endif %}
+                                
+                                {% if profile and profile.portfolio_url %}
+                                <a href="{{ profile.portfolio_url }}" target="_blank" class="social-btn">
+                                    <i class="fas fa-globe"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Response Info -->
+                        <div class="response-info mt-4 p-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-clock text-warning me-2"></i>
+                                <div>
+                                    <h6 class="text-light small fw-semibold mb-1">Quick Response</h6>
+                                    <p class="text-light-emphasis small mb-0">Typically within 24 hours</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Contact Page Styles */
+.contact-form {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.contact-info {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+/* Form Styles */
+.form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+    color: #ffffff;
+}
+
+.form-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Contact Items */
+.contact-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.contact-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contact-icon i {
+    font-size: 1rem;
+}
+
+/* Social Buttons */
+.social-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: #6366f1;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Response Info */
+.response-info {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 6px;
+}
+
+/* Alert Styles */
+.alert {
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border-left: 3px solid #10b981;
+}
+
+.alert-error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-left: 3px solid #ef4444;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #6366f1;
+    border: 1px solid #6366f1;
+}
+
+.btn-primary:hover {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    transform: translateY(-1px);
+}
+
+/* Text Sizes */
+.h2 { font-size: 1.75rem; }
+.h3 { font-size: 1.5rem; }
+.h4 { font-size: 1.25rem; }
+.h5 { font-size: 1.1rem; }
+
+.small {
+    font-size: 0.8rem;
+}
+
+/* Spacing */
+.container {
+    max-width: 1000px;
+}
+
+.row {
+    margin-left: -8px;
+    margin-right: -8px;
+}
+
+.col-md-5, .col-md-6, .col-md-7, .col-lg-10 {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.mb-3 { margin-bottom: 1rem !important; }
+.mb-4 { margin-bottom: 1.5rem !important; }
+.mb-5 { margin-bottom: 2rem !important; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contact-form,
+    .contact-info {
+        padding: 1rem;
+    }
+    
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .col-md-7 {
+        margin-bottom: 2rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form submission loading state
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+                submitBtn.disabled = true;
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
