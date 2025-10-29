@@ -187,3 +187,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email configuration (for contact form)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# New
+CSRF_TRUSTED_ORIGINS = [
+    "https://web-production-5394.up.railway.app"
+]
