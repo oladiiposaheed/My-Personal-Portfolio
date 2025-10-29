@@ -32,13 +32,15 @@ SECRET_KEY = config('SECRET_KEY', default='a-simple-fallback-key-for-dev-only')
 #DEBUG = True
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-#ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = [
-    "web-production-5394.up.railway.app",
-    "127.0.0.1",
-    "localhost"
+    '.onrender.com',
+    'localhost',
+    '127.0.0.1',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+]
 
 # Application definition
 
@@ -90,37 +92,28 @@ WSGI_APPLICATION = 'porfolio.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-# Check for Railway-style DATABASE_URL first
-
-# Check for Railway-style DATABASE_URL first
-if config('DATABASE_URL', default=None):
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=config('DATABASE_URL'),
-            conn_max_age=600,
-            ssl_require=not DEBUG
-        )
-    }
-else:
-    # Fallback to SQLite for local development
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+# Database configuration for Render
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=not DEBUG
+    )
+}
     
 
 
+# Only enable security in production
 # Only enable security in production
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_HSTS_SECONDS = 300  # 5 minutes for testing
+    SECURE_HSTS_SECONDS = 300
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -156,16 +149,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-# Static files (CSS, JavaScript, Images)
+# Static files
 STATIC_URL = '/static/'
-
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # Only if this directory exists
-]
-
-if not (BASE_DIR / 'static').exists():
-    STATICFILES_DIRS = []
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Whitenoise for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -193,7 +180,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email configuration (for contact form)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# New
-CSRF_TRUSTED_ORIGINS = [
-    "https://web-production-5394.up.railway.app"
-]
