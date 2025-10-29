@@ -1,0 +1,37 @@
+[
+{
+  "model": "core.profile",
+  "pk": 1,
+  "fields": {
+    "user": 5,
+    "title": "Full Stack AI Engineer",
+    "bio": "A systems thinker at heart, blending machine intelligence with software craftsmanship. With a foundation rooted in Python and Django, I build scalable web platforms that serve as the backbone for intelligent applications. My expertise spans the full arc of modern AI—from classical machine learning and deep learning with PyTorch to advanced LLM architectures and Retrieval-Augmented Generation (RAG).\r\nI specialize in MLOps: not just deploying models, but engineering pipelines that are automated, reproducible, and cloud-native. Whether it's orchestrating CI/CD workflows with Jenkins, tracking experiments with MLflow, or optimizing inference latency for LLMs, I bring precision and production-readiness to every layer.\r\nMy portfolio reflects a commitment to clean architecture, thoughtful design, and real-world impact—across domains like natural language processing, recommendation systems, and enterprise automation.",
+    "about_me": "Hi, I’m Oladiipo—a passionate engineer focused on building intelligent systems and scalable software. My work bridges the worlds of artificial intelligence and web development, with a specialization in:\r\n- Machine Learning & Deep Learning: I build predictive models and neural networks using PyTorch, Scikit-learn, and modern data pipelines.\r\n- MLOps: I automate the ML lifecycle with tools like MLflow, Jenkins, Docker, and cloud platforms to ensure reproducibility and scalability.\r\n- LLMs & LLMOps: I design and deploy large language models with prompt orchestration, safety filters, and latency optimization for production-grade generative AI.\r\n- RAG Systems: I integrate semantic search and vector databases to enhance LLM outputs with real-time, domain-specific knowledge.\r\n- Web Development: I create robust backend systems using Django and deliver responsive, user-friendly interfaces with Bootstrap and HTML/CSS.\r\nI thrive at the intersection of AI and engineering—where models meet infrastructure, and ideas become products.",
+    "profile_image": "profile/img_8NitW30.jpg",
+    "resume": "resume/myNew_Resume.pdf",
+    "github_url": "https://github.com/oladiiposaheed/",
+    "linkedin_url": "https://www.linkedin.com/in/oladiiposaheed/",
+    "twitter_url": "",
+    "portfolio_url": "",
+    "email": "oladiiposaheed@gmail.com",
+    "phone": "+2347037404885",
+    "address": "",
+    "meta_description": "A production-ready MLOps pipeline for hotel booking prediction using Jenkins, MLflow, Django, Flask, and GCP. Features automated CI/CD workflows, model tracking, RESTful API deployment, and scalable cloud infrastructure.",
+    "meta_keywords": "MLOps, hotel booking prediction, Jenkins, MLflow, Django, Flask, GCP, CI/CD, machine learning, automated pipeline, REST API, model deployment, cloud infrastructure, experiment tracking, Python, data science, fullstack AI",
+    "created_at": "2025-10-17T21:35:10.788Z",
+    "updated_at": "2025-10-17T22:48:03.574Z"
+  }
+},
+{
+  "model": "core.contactmessage",
+  "pk": 1,
+  "fields": {
+    "name": "Hawwa Saheed",
+    "email": "hawwasaheed@gmail.com",
+    "subject": "Love",
+    "message": "I love you but i don't know how to tell you. will you marry me Saheed?",
+    "is_read": false,
+    "created_at": "2025-10-17T20:15:50.538Z"
+  }
+}
+]
