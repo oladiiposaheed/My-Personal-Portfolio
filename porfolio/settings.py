@@ -20,7 +20,7 @@ from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -29,7 +29,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = config('SECRET_KEY', default='a-simple-fallback-key-for-dev-only')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
@@ -86,6 +87,7 @@ WSGI_APPLICATION = 'porfolio.wsgi.application'
 
 # Check for Railway-style DATABASE_URL first
 
+# Check for Railway-style DATABASE_URL first
 # if config('DATABASE_URL', default=None):
 #     DATABASES = {
 #         'default': dj_database_url.config(
@@ -94,10 +96,9 @@ WSGI_APPLICATION = 'porfolio.wsgi.application'
 #             ssl_require=not DEBUG
 #         )
 #     }
-    
 # elif all([
 #     config('DB_NAME', default=None),
-#     config('DB_USER', default=None),
+#     config('DB_USER', default=None), 
 #     config('DB_PASSWORD', default=None),
 #     config('DB_HOST', default=None)
 # ]):
@@ -112,8 +113,8 @@ WSGI_APPLICATION = 'porfolio.wsgi.application'
 #             'PORT': config('DB_PORT', default='5432'),
 #         }
 #     }
-
 # else:
+# Fallback to SQLite for local development
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -122,15 +123,15 @@ DATABASES = {
 }
     
 
-# Security settings
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Additional security settings
+# Only enable security in production
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 #SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_SECONDS = 300  # 5 minutes for testing
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
