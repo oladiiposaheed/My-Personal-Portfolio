@@ -32,7 +32,12 @@ SECRET_KEY = config('SECRET_KEY', default='a-simple-fallback-key-for-dev-only')
 #DEBUG = True
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    "web-production-5394.up.railway.app",
+    "127.0.0.1",
+    "localhost"
+]
 
 
 # Application definition
