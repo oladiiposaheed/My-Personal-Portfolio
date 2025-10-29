@@ -1,0 +1,271 @@
+[
+{
+  "model": "projects.projectcategory",
+  "pk": 1,
+  "fields": {
+    "name": "MLOPs",
+    "description": "Integrating machine learning workflows into DevOps pipelines for seamless model deployment, versioning, and monitoring.",
+    "slug": "mlops",
+    "icon": "fas fa-tools",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "projects.projectcategory",
+  "pk": 2,
+  "fields": {
+    "name": "Web Development with Django",
+    "description": "Django is a high-level Python web framework that enables rapid development of secure and maintainable web applications. It follows the Model-View-Template (MVT) architectural pattern and comes with a robust set of built-in features, including an admin interface, authentication system, URL routing, and ORM (Object-Relational Mapping). Django emphasizes reusability, scalability, and clean design, making it ideal for building everything from simple websites to complex enterprise platforms.\r\nIt’s widely used for:\r\n- Building full-stack web applications\r\n- Creating RESTful APIs (with Django REST Framework)\r\n- Managing databases through its ORM\r\n- Rapid prototyping with minimal boilerplate\r\n- Deploying scalable apps with built-in security features",
+    "slug": "web-development-with-django",
+    "icon": "fas fa-globe",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "projects.projectcategory",
+  "pk": 3,
+  "fields": {
+    "name": "Deep Learning with PyTorch",
+    "description": "Deep Learning with PyTorch involves building and training advanced neural networks using PyTorch—a flexible, open-source deep learning framework developed by Meta AI. PyTorch is known for its dynamic computation graph, intuitive syntax, and strong support for GPU acceleration, making it ideal for research and production-level AI systems.",
+    "slug": "deep-learning-with-pytorch",
+    "icon": "fas fa-brain",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 1,
+  "fields": {
+    "name": "Python",
+    "icon": "fas fa-code"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 2,
+  "fields": {
+    "name": "Python & Scikit-learn",
+    "icon": "fas fa-python"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 3,
+  "fields": {
+    "name": "- MLflow",
+    "icon": "fas fa-chart-line"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 4,
+  "fields": {
+    "name": "Django",
+    "icon": "fas fa-globe"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 5,
+  "fields": {
+    "name": "Flask",
+    "icon": "fas fa-feather-alt"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 6,
+  "fields": {
+    "name": "CI/CD",
+    "icon": "fas fa-sync-alt"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 7,
+  "fields": {
+    "name": "GCP",
+    "icon": "fas fa-cloud"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 8,
+  "fields": {
+    "name": "Jenkins",
+    "icon": "fas fa-code-branch"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 9,
+  "fields": {
+    "name": "Pandas",
+    "icon": "fas fa-database"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 10,
+  "fields": {
+    "name": "Numpy",
+    "icon": "fas fa-square-root-alt"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 11,
+  "fields": {
+    "name": "Sqlite",
+    "icon": "fas fa-database"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 12,
+  "fields": {
+    "name": "HTML/CSS",
+    "icon": "fas fa-laptop-code"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 13,
+  "fields": {
+    "name": "Bootstrap",
+    "icon": "fas fa-mobile-alt"
+  }
+},
+{
+  "model": "projects.technology",
+  "pk": 14,
+  "fields": {
+    "name": "Pytorch",
+    "icon": "fas fa-brain"
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 1,
+  "fields": {
+    "title": "Intelligent Hotel Booking Prediction: Automated MLOps Pipeline",
+    "slug": "intelligent-hotel-booking-prediction-automated-mlo",
+    "description": "A fully automated MLOps pipeline designed to predict hotel booking outcomes using machine learning. The system integrates model training, deployment, and monitoring with robust CI/CD practices, enabling scalable and reliable delivery of predictive services.",
+    "detailed_description": "This project demonstrates a full-stack MLOps architecture tailored for hotel booking prediction. It integrates continuous integration and delivery (CI/CD), experiment tracking, model registry, and cloud deployment. Jenkins orchestrates the pipeline, MLflow manages model lifecycle, and Django/Flask power the backend services. The system is deployed on Google Cloud Platform (GCP), enabling real-time predictions via RESTful APIs.\r\nKey features:\r\n- Automated training and deployment triggered via Jenkins.\r\n- MLflow for experiment tracking, model registry, and versioning.\r\n- Django for admin dashboard and user interface.\r\n- Flask for lightweight, scalable API endpoints.\r\n- GCP for hosting, storage, and compute resources.\r\n- CI/CD pipelines for seamless updates and reliability.",
+    "category": 1,
+    "status": "completed",
+    "featured": true,
+    "image": "projects/main/hotel_booking.jpg",
+    "github_url": "https://github.com/oladiiposaheed/Automated-MLOps-Pipeline-for-Hotel-Booking-Prediction-Using-Jenkins-MLflow-Django-Flask-GCP-and-CICD",
+    "live_demo_url": null,
+    "start_date": null,
+    "end_date": null,
+    "meta_description": "A production-ready MLOps pipeline for hotel booking prediction using Jenkins, MLflow, Django, Flask, and GCP. Features automated CI/CD workflows, model tracking, RESTful API deployment, and scalable cloud infrastructure.",
+    "meta_keywords": "MLOps, hotel booking prediction, Jenkins, MLflow, Django, Flask, GCP, CI/CD, machine learning, automated pipeline, REST API, model deployment, cloud infrastructure, experiment tracking, Python, data science, fullstack AI",
+    "created_at": "2025-10-20T16:54:03.830Z",
+    "updated_at": "2025-10-20T16:56:32.480Z",
+    "published": true,
+    "technologies": [
+      3,
+      6,
+      4,
+      5,
+      7,
+      8,
+      10,
+      9,
+      2
+    ]
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 2,
+  "fields": {
+    "title": "CineVault: Movie Store Management System",
+    "slug": "cinevault-movie-store-management-system",
+    "description": "CineVault is a full-stack movie store web application built with Django. It allows users to browse a curated list of movies, view detailed information, search titles, and manage content through an intuitive interface. The system includes full CRUD functionality and a secure admin backend for content management.",
+    "detailed_description": "CineVault was designed to streamline the management and discovery of movie content in a digital storefront format. Built entirely with Django, the application features a clean and responsive UI for users to explore available movies, search by title, and view detailed descriptions. Admins can add, update, or delete movie entries through Django’s built-in admin panel.\r\nKey features include:\r\n- Movie listing page with pagination and dynamic search.\r\n- Detailed movie view showing synopsis, genre, and release info.\r\n- CRUD operations for adding, editing, and deleting movies.\r\n- Search functionality for quick access to specific titles.\r\n- Admin dashboard for backend management.\r\n- Responsive design for desktop and mobile devices.",
+    "category": 2,
+    "status": "in_progress",
+    "featured": true,
+    "image": "projects/main/movie_img.jpg",
+    "github_url": "https://github.com/oladiiposaheed/Building-Movie-Store-Application-System-with-Django",
+    "live_demo_url": null,
+    "start_date": null,
+    "end_date": null,
+    "meta_description": "",
+    "meta_keywords": "Django, Movie Store, Web Application, Python, CRUD, SQLite, Bootstrap, Admin Dashboard, Movie Listing, Search Functionality, CineVault, Portfolio Project, Full Stack Development",
+    "created_at": "2025-10-20T19:30:26.999Z",
+    "updated_at": "2025-10-20T19:38:28.149Z",
+    "published": true,
+    "technologies": [
+      13,
+      4,
+      12,
+      1,
+      11
+    ]
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 3,
+  "fields": {
+    "title": "CrackVision: Concrete Surface Defect Classification with PyTorc",
+    "slug": "crackvision-concrete-surface-defect-classification",
+    "description": "CrackVision is a deep learning-based image classification system that detects and categorizes cracks in concrete surfaces. Built using Convolutional Neural Networks (CNNs) in PyTorch, the model helps automate structural inspections by identifying surface defects with high accuracy.",
+    "detailed_description": "CrackVision leverages the power of deep learning to classify concrete surface images into cracked and non-cracked categories. Using a custom CNN architecture implemented in PyTorch, the model was trained on a labeled dataset of concrete images. The pipeline includes image preprocessing, data augmentation, model training, evaluation, and visualization of predictions.\r\nKey features:\r\n- Image classification using CNNs for binary crack detection\r\n- PyTorch-based training loop with custom architecture and loss tracking\r\n- Data preprocessing \r\n- Model evaluation using accuracy",
+    "category": 3,
+    "status": "completed",
+    "featured": true,
+    "image": "projects/main/cracked-concrete.png",
+    "github_url": "https://github.com/oladiiposaheed/Concrete-Crack-Classification-with-PyTorch-CNN-",
+    "live_demo_url": null,
+    "start_date": null,
+    "end_date": null,
+    "meta_description": "CrackVision is a deep learning project built with PyTorch that classifies concrete surface images to detect cracks. It uses CNNs for image analysis, data preprocessing, and model evaluation to support automated structural inspections.",
+    "meta_keywords": "PyTorch, CNN, Concrete Crack Detection, Deep Learning, Image Classification, CrackVision, Structural Inspection, Computer Vision, Python, Jupyter Notebook",
+    "created_at": "2025-10-20T19:55:09.709Z",
+    "updated_at": "2025-10-20T19:55:09.709Z",
+    "published": true,
+    "technologies": [
+      1,
+      14
+    ]
+  }
+},
+{
+  "model": "projects.projectimage",
+  "pk": 1,
+  "fields": {
+    "project": 1,
+    "image": "projects/gallery/hotel_booking.png",
+    "caption": "",
+    "order": 1
+  }
+},
+{
+  "model": "projects.projectimage",
+  "pk": 2,
+  "fields": {
+    "project": 2,
+    "image": "projects/gallery/movie_img.png",
+    "caption": "",
+    "order": 2
+  }
+},
+{
+  "model": "projects.projectimage",
+  "pk": 3,
+  "fields": {
+    "project": 3,
+    "image": "projects/gallery/cracked-concrete.png",
+    "caption": "",
+    "order": 3
+  }
+}
+]

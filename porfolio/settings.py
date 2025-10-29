@@ -88,39 +88,22 @@ WSGI_APPLICATION = 'porfolio.wsgi.application'
 # Check for Railway-style DATABASE_URL first
 
 # Check for Railway-style DATABASE_URL first
-# if config('DATABASE_URL', default=None):
-#     DATABASES = {
-#         'default': dj_database_url.config(
-#             default=config('DATABASE_URL'),
-#             conn_max_age=600,
-#             ssl_require=not DEBUG
-#         )
-#     }
-# elif all([
-#     config('DB_NAME', default=None),
-#     config('DB_USER', default=None), 
-#     config('DB_PASSWORD', default=None),
-#     config('DB_HOST', default=None)
-# ]):
-#     # PostgreSQL configuration from individual environment variables
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': config('DB_NAME'),
-#             'USER': config('DB_USER'),
-#             'PASSWORD': config('DB_PASSWORD'),
-#             'HOST': config('DB_HOST'),
-#             'PORT': config('DB_PORT', default='5432'),
-#         }
-#     }
-# else:
-# Fallback to SQLite for local development
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if config('DATABASE_URL', default=None):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=not DEBUG
+        )
     }
-}
+else:
+    # Fallback to SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
     
 
 
@@ -130,13 +113,9 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-
-#SECURE_HSTS_SECONDS = 31536000  # 1 year
-SECURE_HSTS_SECONDS = 300  # 5 minutes for testing
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-
+    SECURE_HSTS_SECONDS = 300  # 5 minutes for testing
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
