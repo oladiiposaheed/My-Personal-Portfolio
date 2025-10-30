@@ -18,29 +18,37 @@ def export_all_data():
     os.makedirs('projects/fixtures', exist_ok=True)
     os.makedirs('certifications/fixtures', exist_ok=True)
     
-    print("Exporting data...")
+    print("Exporting local data to fixtures...")
     
-    # Export Profile data
-    with open('core/fixtures/profiles.json', 'w', encoding='utf-8') as f:
-        data = serializers.serialize('json', Profile.objects.all())
-        f.write(data)
-    
-    # Export Projects data
-    with open('projects/fixtures/projects.json', 'w', encoding='utf-8') as f:
-        data = serializers.serialize('json', Project.objects.all())
-        f.write(data)
-    
-    # Export Certifications data
-    with open('certifications/fixtures/certifications.json', 'w', encoding='utf-8') as f:
-        data = serializers.serialize('json', Certification.objects.all())
-        f.write(data)
-    
-    # Export Users
-    with open('core/fixtures/users.json', 'w', encoding='utf-8') as f:
-        data = serializers.serialize('json', User.objects.all())
-        f.write(data)
-    
-    print("✅ All data exported successfully!")
+    try:
+        # Export Profile data
+        profiles = Profile.objects.all()
+        with open('core/fixtures/profiles.json', 'w', encoding='utf-8') as f:
+            f.write(serializers.serialize('json', profiles))
+        print(f"✅ Exported {len(profiles)} profiles")
+        
+        # Export Projects data
+        projects = Project.objects.all()
+        with open('projects/fixtures/projects.json', 'w', encoding='utf-8') as f:
+            f.write(serializers.serialize('json', projects))
+        print(f"✅ Exported {len(projects)} projects")
+        
+        # Export Certifications data
+        certifications = Certification.objects.all()
+        with open('certifications/fixtures/certifications.json', 'w', encoding='utf-8') as f:
+            f.write(serializers.serialize('json', certifications))
+        print(f"✅ Exported {len(certifications)} certifications")
+        
+        # Export Users
+        users = User.objects.all()
+        with open('core/fixtures/users.json', 'w', encoding='utf-8') as f:
+            f.write(serializers.serialize('json', users))
+        print(f"✅ Exported {len(users)} users")
+        
+        print("🎉 All local data exported successfully!")
+        
+    except Exception as e:
+        print(f"❌ Error: {e}")
 
 if __name__ == '__main__':
     export_all_data()
