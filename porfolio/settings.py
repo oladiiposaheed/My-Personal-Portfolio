@@ -14,7 +14,6 @@ from pathlib import Path
 import os
 # Database Configuration
 import dj_database_url
-from decouple import config
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -28,19 +27,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-SECRET_KEY = config('SECRET_KEY', default='a-simple-fallback-key-for-dev-only')
+SECRET_KEY = os.environ.get('SECRET_KEY', default='a-simple-fallback-key-for-dev-only')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-DEBUG = config('DEBUG', default=True, cast=bool)
+
+# Convert string to boolean for DEBUG
+DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 't')
 
 ALLOWED_HOSTS = [
+    '.railway.app',  
     '.onrender.com',
     'localhost',
     '127.0.0.1',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    'https://*.railway.app',  
     'https://*.onrender.com',
 ]
 
@@ -89,21 +91,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'porfolio.wsgi.application'
 
-#DB_LIVE = ['False', False]
+# Database Configuration using os.environ
+DB_LIVE = os.environ.get('DB_LIVE', 'False').lower() in ('true', '1', 't')
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-
-# Database Configuration
-DB_LIVE = config('DB_LIVE', default='False', cast=bool)
-
-if config('DATABASE_URL', default=None):
+if os.environ.get('DATABASE_URL'):
     # Production - Use PostgreSQL from DATABASE_URL (Railway/Render)
     DATABASES = {
         'default': dj_database_url.config(
-            default=config('DATABASE_URL'),
+            default=os.environ.get('DATABASE_URL'),
             conn_max_age=600,
             ssl_require=not DEBUG
         )
@@ -115,11 +110,11 @@ elif DB_LIVE:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'HOST': config('DB_HOST'),
-            'PORT': config('DB_PORT', default='5432'),
+            'NAME': os.environ.get('DB_NAME'),
+            'USER': os.environ.get('DB_USER'),
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
+            'HOST': os.environ.get('DB_HOST'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
         }
     }
     print("✅ Using PostgreSQL (Development - DB_LIVE=True)")
@@ -132,11 +127,9 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-    print("✅ Using SQLite (Local Development - DB_LIVE=False)")    
+    print("✅ Using SQLite (Local Development - DB_LIVE=False)")
 
-
-# Only enable security in production
-# Only enable security in production
+# Security settings (production only)
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
