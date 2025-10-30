@@ -33,13 +33,14 @@ SECRET_KEY = config('SECRET_KEY', default='a-simple-fallback-key-for-dev-only')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = [
-    '.onrender.com',
+    '.railway.app',
     'localhost',
     '127.0.0.1',
 ]
 
+# CSRF for Railway
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.onrender.com',
+    'https://*.railway.app',
 ]
 
 # Application definition
@@ -92,27 +93,21 @@ WSGI_APPLICATION = 'porfolio.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-# Database configuration for Render
+# Database configuration for Railway
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('DATABASE_URL'),
+        default=config('DATABASE_URL', default='sqlite:///db.sqlite3'),
         conn_max_age=600,
         ssl_require=not DEBUG
     )
 }
-    
 
 
-# Only enable security in production
-# Only enable security in production
+# Security (production only)
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_HSTS_SECONDS = 300
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
 
 
 # Password validation
@@ -153,8 +148,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-
-# Whitenoise for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
