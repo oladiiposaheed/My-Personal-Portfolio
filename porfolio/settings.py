@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
-print(SECRET_KEY)
+
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = True
@@ -37,13 +37,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-if DEBUG:
-    ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://*.railway.app',  
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://*.railway.app',  
 
-]
+# ]
 
 # Application definition
 
@@ -91,9 +89,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'porfolio.wsgi.application'
 
 # Database Configuration using os.environ
-DB_LIVE = os.environ.get('DB_LIVE')
+DB = os.environ.get('DB_LIVE')
 
-if DB_LIVE in ['False', False]:
+if DB in ['False', False]:
     # Local Development - Use SQLite as fallback
     DATABASES = {
         'default': {
@@ -125,10 +123,6 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
-print("=== DJANGO SETTINGS LOADING ===")
-print(f"DEBUG: {DEBUG}")
-print(f"DATABASE_URL exists: {bool(os.environ.get('DATABASE_URL'))}")
-print(f"DB_LIVE: {DB_LIVE}")
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
