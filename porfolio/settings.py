@@ -93,25 +93,14 @@ WSGI_APPLICATION = 'porfolio.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-# Use PostgreSQL on Railway, SQLite locally
-if config('DATABASE_URL', default=None):
-    # Production (Railway) - PostgreSQL
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=config('DATABASE_URL'),
-            conn_max_age=600,
-            ssl_require=not DEBUG
-        )
-    }
-else:
-    # Development (Local) - SQLite
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-
+# Database configuration for Railway
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL', default='sqlite:///db.sqlite3'),
+        conn_max_age=600,
+        ssl_require=not DEBUG
+    )
+}
 
 
 # Security (production only)
@@ -159,6 +148,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Whitenoise for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
