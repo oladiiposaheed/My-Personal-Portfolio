@@ -1,0 +1,9 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn porfolio.wsgi:application --bind 0.0.0.0:$PORT"
+
+[[services]]
+name = "web"
+httpPort = 8000
