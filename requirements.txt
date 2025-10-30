@@ -7,4 +7,4 @@ python-dotenv
 python-decouple
 dj-database-url
 whitenoise
-gunicorn
+gunicornpython-dotenv 
