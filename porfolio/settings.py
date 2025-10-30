@@ -12,11 +12,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-# Database Configuration
-import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
+
+#import dj_database_url
+
 
 
 
@@ -27,25 +28,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-SECRET_KEY = os.environ.get('SECRET_KEY', default='a-simple-fallback-key-for-dev-only')
-
+SECRET_KEY = os.environ.get('SECRET_KEY')
+print(SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 
-# Convert string to boolean for DEBUG
-DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 't')
+DEBUG = True
 
 
+ALLOWED_HOSTS = ['*']
 
-ALLOWED_HOSTS = [
-    '.railway.app',  
-    '.onrender.com',
-    'localhost',
-    '127.0.0.1',
-]
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.railway.app',  
-    'https://*.onrender.com',
+
 ]
 
 # Application definition
@@ -94,34 +91,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'porfolio.wsgi.application'
 
 # Database Configuration using os.environ
-DB_LIVE = os.environ.get('DB_LIVE', 'False').lower() in ('true', '1', 't')
+DB_LIVE = os.environ.get('DB_LIVE')
 
-if os.environ.get('DATABASE_URL'):
-    # Production - Use PostgreSQL from DATABASE_URL (Railway/Render)
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            ssl_require=not DEBUG
-        )
-    }
-    print("✅ Using PostgreSQL (Production - DATABASE_URL)")
-    
-elif DB_LIVE:
-    # Development - Use PostgreSQL with individual environment variables
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME'),
-            'USER': os.environ.get('DB_USER'),
-            'PASSWORD': os.environ.get('DB_PASSWORD'),
-            'HOST': os.environ.get('DB_HOST'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
-        }
-    }
-    print("✅ Using PostgreSQL (Development - DB_LIVE=True)")
-    
-else:
+if DB_LIVE in ['False', False]:
     # Local Development - Use SQLite as fallback
     DATABASES = {
         'default': {
@@ -129,7 +101,19 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-    print("✅ Using SQLite (Local Development - DB_LIVE=False)")
+    
+else:
+    # Development - Use PostgreSQL with individual environment variables
+    DATABASES = {
+        'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': os.environ.get('DB_NAME'),
+                'USER': os.environ.get('DB_USER'),
+                'PASSWORD': os.environ.get('DB_PASSWORD'),
+                'HOST': os.environ.get('DB_HOST'),
+                'PORT': os.environ.get('DB_PORT'),
+            }
+        }
 
 # Security settings (production only)
 if not DEBUG:
