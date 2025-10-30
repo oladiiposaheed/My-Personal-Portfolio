@@ -1,10 +1,7 @@
-Django
+Django>=5.0
 Pillow
 psycopg2-binary
 whitenoise
 gunicorn
 python-dotenv
-python-decouple
 dj-database-url
-whitenoise
-gunicornpython-dotenv 
