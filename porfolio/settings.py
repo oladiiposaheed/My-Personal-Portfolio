@@ -15,7 +15,9 @@ import os
 # Database Configuration
 import dj_database_url
 from decouple import config
+from dotenv import load_dotenv
 
+load_dotenv()
 
 
 
@@ -87,45 +89,50 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'porfolio.wsgi.application'
 
-DB_LIVE = ['False', False]
+#DB_LIVE = ['False', False]
 
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-if DB_LIVE in ['False', False]:
-    
-    DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db_sqlite3'
-    }
-    
-}
-    
-else:   
-    # Database configuration for Railway
+# Database Configuration
+DB_LIVE = config('DB_LIVE', default='False', cast=bool)
 
+if config('DATABASE_URL', default=None):
+    # Production - Use PostgreSQL from DATABASE_URL (Railway/Render)
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=not DEBUG
+        )
+    }
+    print("✅ Using PostgreSQL (Production - DATABASE_URL)")
+    
+elif DB_LIVE:
+    # Development - Use PostgreSQL with individual environment variables
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME'),
-            'USER': os.getenv('DB_USER'),
-            'PASSWORD': os.getenv('DB_PASSWORD'),
-            'HOST': os.getenv('DB_HOST'),
-            'POST': os.getenv('DB_PORT'),
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT', default='5432'),
         }
     }
-
-DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=not DEBUG
-    )
-}
+    print("✅ Using PostgreSQL (Development - DB_LIVE=True)")
     
+else:
+    # Local Development - Use SQLite as fallback
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    print("✅ Using SQLite (Local Development - DB_LIVE=False)")    
 
 
 # Only enable security in production
