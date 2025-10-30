@@ -1,7 +1,9 @@
-Django>=5.0
-Pillow
-psycopg2-binary
-whitenoise
-gunicorn
-dj-database-url
-python-decouple
+asgiref==3.10.0
+Django==5.2.7
+gunicorn==23.0.0
+packaging==25.0
+pillow==12.0.0
+python-dotenv==1.2.1
+sqlparse==0.5.3
+tzdata==2025.2
+whitenoise==6.11.0
