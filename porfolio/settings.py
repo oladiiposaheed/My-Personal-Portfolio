@@ -35,101 +35,26 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='a-simple-fallback-key-for-dev
 DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 't')
 
 
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-ALLOWED_HOSTS = [
-    '.railway.app',  
-    '.onrender.com',
-    'localhost',
-    '127.0.0.1',
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://*.railway.app',  
-    'https://*.onrender.com',
-]
-
-# Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'core',
-    'projects',
-    'certifications',
-]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-ROOT_URLCONF = 'porfolio.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'core.context_processors.profile_data',
-            ],
-        },
-    },
-]
-
-WSGI_APPLICATION = 'porfolio.wsgi.application'
-
-# Database Configuration using os.environ
-DB_LIVE = os.environ.get('DB_LIVE', 'False').lower() in ('true', '1', 't')
-
-if os.environ.get('DATABASE_URL'):
-    # Production - Use PostgreSQL from DATABASE_URL (Railway/Render)
+if DATABASE_URL:
+    # Production - Use PostgreSQL
     DATABASES = {
         'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            ssl_require=not DEBUG
+            default=DATABASE_URL,
+            conn_max_age=600
         )
     }
-    print("✅ Using PostgreSQL (Production - DATABASE_URL)")
-    
-elif DB_LIVE:
-    # Development - Use PostgreSQL with individual environment variables
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME'),
-            'USER': os.environ.get('DB_USER'),
-            'PASSWORD': os.environ.get('DB_PASSWORD'),
-            'HOST': os.environ.get('DB_HOST'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
-        }
-    }
-    print("✅ Using PostgreSQL (Development - DB_LIVE=True)")
-    
+    print("✅ Using PostgreSQL on Railway")
 else:
-    # Local Development - Use SQLite as fallback
+    # Development - Use SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-    print("✅ Using SQLite (Local Development - DB_LIVE=False)")
+    print("✅ Using SQLite locally")
 
 # Security settings (production only)
 if not DEBUG:
