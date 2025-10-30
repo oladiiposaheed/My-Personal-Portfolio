@@ -210,3 +210,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email configuration (for contact form)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+PORT = os.environ.get('PORT', '8000')
