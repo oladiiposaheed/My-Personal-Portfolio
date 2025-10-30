@@ -34,6 +34,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='a-simple-fallback-key-for-dev
 # Convert string to boolean for DEBUG
 DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 't')
 
+
+
 ALLOWED_HOSTS = [
     '.railway.app',  
     '.onrender.com',
@@ -139,7 +141,10 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
-
+print("=== DJANGO SETTINGS LOADING ===")
+print(f"DEBUG: {DEBUG}")
+print(f"DATABASE_URL exists: {bool(os.environ.get('DATABASE_URL'))}")
+print(f"DB_LIVE: {DB_LIVE}")
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
