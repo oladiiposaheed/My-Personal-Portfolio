@@ -94,13 +94,24 @@ WSGI_APPLICATION = 'porfolio.wsgi.application'
 
 
 # Database configuration for Railway
+
+# Simple and reliable - works locally and on Railway
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='sqlite:///db.sqlite3'),
-        conn_max_age=600,
-        ssl_require=not DEBUG
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+# If DATABASE_URL exists (on Railway), use PostgreSQL instead
+if config('DATABASE_URL', default=None):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL'),
+            conn_max_age=600
+        )
+    }
+
 
 
 # Security (production only)
