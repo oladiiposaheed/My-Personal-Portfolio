@@ -69,7 +69,7 @@ if not DEBUG:
 print("=== DJANGO SETTINGS LOADING ===")
 print(f"DEBUG: {DEBUG}")
 print(f"DATABASE_URL exists: {bool(os.environ.get('DATABASE_URL'))}")
-print(f"DB_LIVE: {DB_LIVE}")
+#print(f"DB_LIVE: {DB_LIVE}")
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
