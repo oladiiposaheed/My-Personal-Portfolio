@@ -33,14 +33,13 @@ SECRET_KEY = config('SECRET_KEY', default='a-simple-fallback-key-for-dev-only')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = [
-    '.railway.app',
+    '.onrender.com',
     'localhost',
     '127.0.0.1',
 ]
 
-# CSRF for Railway
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.railway.app',
+    'https://*.onrender.com',
 ]
 
 # Application definition
@@ -88,37 +87,57 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'porfolio.wsgi.application'
 
+DB_LIVE = ['False', False]
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-# Database configuration for Railway
-
-# Simple and reliable - works locally and on Railway
-DATABASES = {
+if DB_LIVE in ['False', False]:
+    
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db_sqlite3'
     }
+    
 }
+    
+else:   
+    # Database configuration for Railway
 
-# If DATABASE_URL exists (on Railway), use PostgreSQL instead
-if config('DATABASE_URL', default=None):
     DATABASES = {
-        'default': dj_database_url.config(
-            default=config('DATABASE_URL'),
-            conn_max_age=600
-        )
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST'),
+            'POST': os.getenv('DB_PORT'),
+        }
     }
 
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=not DEBUG
+    )
+}
+    
 
 
-# Security (production only)
+# Only enable security in production
+# Only enable security in production
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_HSTS_SECONDS = 300
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 
 # Password validation
