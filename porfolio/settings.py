@@ -101,19 +101,18 @@ WSGI_APPLICATION = 'porfolio.wsgi.application'
 import os
 
 # Check if we're running on Railway (they set RAILWAY_ENVIRONMENT)
-if os.environ.get('RAILWAY_ENVIRONMENT'):
-    # Use Railway PostgreSQL internally (no egress costs)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('PGDATABASE', 'railway'),
-            'USER': os.environ.get('PGUSER', 'postgres'),
-            'PASSWORD': os.environ.get('PGPASSWORD', ''),
-            'HOST': os.environ.get('PGHOST', 'localhost'),
-            'PORT': os.environ.get('PGPORT', '5432'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
-# else:
+}
+
+    
 #     # Local development - use SQLite
 #     DATABASES = {
 #         'default': {
