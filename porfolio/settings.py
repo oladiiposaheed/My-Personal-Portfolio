@@ -76,29 +76,51 @@ WSGI_APPLICATION = 'porfolio.wsgi.application'
 
 # Only use PostgreSQL if all environment variables are set
 
-# Database configuration - requires all environment variables to be set
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'portfolio_db'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-    }
-}
-
-# Use SQLite for development
+#Database configuration - requires all environment variables to be set
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'railway',
-#         'USER':'postgres',
-#         'PASSWORD':os.environ.get('DB_PASSWORD'),
-#         'HOST':'postgres.railway.internal',
-#         'PORT':'5432',
+#         'USER': 'postgres',
+#         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+#         'HOST': 'yamabiko.proxy.rlwy.net',
+#         'PORT': '5432',
 #     }
 # }
+
+# Use SQLite for development
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+# Database configuration
+import os
+
+# Check if we're running on Railway (they set RAILWAY_ENVIRONMENT)
+if os.environ.get('RAILWAY_ENVIRONMENT'):
+    # Use Railway PostgreSQL internally (no egress costs)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('PGDATABASE', 'railway'),
+            'USER': os.environ.get('PGUSER', 'postgres'),
+            'PASSWORD': os.environ.get('PGPASSWORD', ''),
+            'HOST': os.environ.get('PGHOST', 'localhost'),
+            'PORT': os.environ.get('PGPORT', '5432'),
+        }
+    }
+# else:
+#     # Local development - use SQLite
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
 
 
 # Security settings (production only)
