@@ -57,7 +57,7 @@ MIDDLEWARE = [
 ]
 
 # FIXED TYPO: porfolio → portfolio
-ROOT_URLCONF = 'portfolio.urls'
+ROOT_URLCONF = 'porfolio.urls'
 
 TEMPLATES = [
     {
@@ -77,7 +77,7 @@ TEMPLATES = [
 ]
 
 # FIXED TYPO: porfolio → portfolio
-WSGI_APPLICATION = 'portfolio.wsgi.application'
+WSGI_APPLICATION = 'porfolio.wsgi.application'
 
 # Database configuration - USE SQLITE (ACTIVE NOW)
 DATABASES = {
