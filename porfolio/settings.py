@@ -118,10 +118,10 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
+        'NAME': 'railway',
+        'USER': 'postgres',
         'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
+        'HOST': 'yamabiko.proxy.rlwy.net',
         'PORT': '57345',
         #'PORT': os.environ.get('DB_PORT'),
     }
