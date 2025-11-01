@@ -14,13 +14,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
 # Quick-start development settings
-SECRET_KEY = 'in5_oc3o^!ec+5$mm09wi14dk)^vc6v-6xnqaa2jtz&3$!+9!t'
+
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['my-personal-portfolio-production-4ead.up.railway.app', 'https://my-personal-portfolio-production-4ead.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['my-personal-portfolio-production-4ead.up.railway.app', 'https://my-personal-portfolio-production-4ead.up.railway.app']
+ALLOWED_HOSTS = [
+    'my-personal-portfolio-production-4ead.up.railway.app',
+    '.railway.app',
+    'localhost',
+    '127.0.0.1',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://my-personal-portfolio-production-4ead.up.railway.app',
+    'https://*.railway.app',
+]
 
 # Application definition
 INSTALLED_APPS = [
