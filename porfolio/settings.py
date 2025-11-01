@@ -19,8 +19,8 @@ SECRET_KEY = 'in5_oc3o^!ec+5$mm09wi14dk)^vc6v-6xnqaa2jtz&3$!+9!t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-CSRF_TRUSTED_ORIGINS = []
+ALLOWED_HOSTS = ['my-personal-portfolio-production-4ead.up.railway.app', 'https://my-personal-portfolio-production-4ead.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['my-personal-portfolio-production-4ead.up.railway.app', 'https://my-personal-portfolio-production-4ead.up.railway.app']
 
 # Application definition
 INSTALLED_APPS = [
