@@ -20,6 +20,7 @@ SECRET_KEY = 'in5_oc3o^!ec+5$mm09wi14dk)^vc6v-6xnqaa2jtz&3$!+9!t'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = []
 
 # Application definition
 INSTALLED_APPS = [
@@ -32,10 +33,12 @@ INSTALLED_APPS = [
     'core',
     'projects',
     'certifications',
+    'whitenoise.runserver_nostatic' # New
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # New
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -108,7 +111,8 @@ DATABASES = {
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'PORT': '57345',
+        #'PORT': os.environ.get('DB_PORT'),
     }
 }
 
@@ -156,11 +160,13 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Whitenoise for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
 
 # Media files configuration
 MEDIA_URL = '/media/'
