@@ -6,24 +6,26 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environmental variable
+# Load environmetal variable
 load_dotenv()
 
 # Quick-start development settings
-SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key-for-dev')
+
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'my-personal-portfolio-production-4ead.up.railway.app',
     '.railway.app',
     'localhost',
     '127.0.0.1',
-    '*',  # Temporary for debugging
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -42,12 +44,12 @@ INSTALLED_APPS = [
     'core',
     'projects',
     'certifications',
-    'whitenoise.runserver_nostatic',  # Comma added
+    'whitenoise.runserver_nostatic' # New
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # New
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,7 +58,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# FIXED TYPO: porfolio → portfolio
 ROOT_URLCONF = 'porfolio.urls'
 
 TEMPLATES = [
@@ -76,16 +77,75 @@ TEMPLATES = [
     },
 ]
 
-# FIXED TYPO: porfolio → portfolio
 WSGI_APPLICATION = 'porfolio.wsgi.application'
 
-# Database configuration - USE SQLITE (ACTIVE NOW)
+
+# Database configuration
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# Only use PostgreSQL if all environment variables are set
+
+#Database configuration - requires all environment variables to be set
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'railway',
+#         'USER': 'postgres',
+#         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+#         'HOST': 'yamabiko.proxy.rlwy.net',
+#         'PORT': '5432',
+#     }
+# }
+
+# Use SQLite for development
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+# Database configuration
+import os
+
+# Check if we're running on Railway (they set RAILWAY_ENVIRONMENT)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': '57345',
+        #'PORT': os.environ.get('DB_PORT'),
     }
 }
+
+    
+#     # Local development - use SQLite
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
+
+
+# Security settings (production only)
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -111,11 +171,13 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = '/static/'
+
+# Whitenoise for static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# WhiteNoise configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files configuration
 MEDIA_URL = '/media/'
@@ -133,13 +195,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# Security settings (production only)
-if not DEBUG:
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
