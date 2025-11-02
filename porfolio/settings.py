@@ -6,32 +6,20 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environmetal variable
+# Load environmental variable
 load_dotenv()
 
 # Quick-start development settings
-
-
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = '2nmad6w4k3sv$ymmcd)lfeo3%x6ao=v3zndy3)+s&)@xin&&nn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'my-personal-portfolio-production-4ead.up.railway.app',
-    '.railway.app',
-    'localhost',
-    '127.0.0.1',
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://my-personal-portfolio-production-4ead.up.railway.app',
-    'https://*.railway.app',
-]
+ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = []
 
 # Application definition
 INSTALLED_APPS = [
@@ -44,12 +32,12 @@ INSTALLED_APPS = [
     'core',
     'projects',
     'certifications',
-    'whitenoise.runserver_nostatic' # New
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # New
+    'whitenoise.middleware.WhiteNoiseMiddleware', # new
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -58,6 +46,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# FIXED: Use 'porfolio' to match your actual project name
 ROOT_URLCONF = 'porfolio.urls'
 
 TEMPLATES = [
@@ -77,75 +66,23 @@ TEMPLATES = [
     },
 ]
 
+# FIXED: Use 'porfolio' to match your actual project name
 WSGI_APPLICATION = 'porfolio.wsgi.application'
 
-
-# Database configuration
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# Only use PostgreSQL if all environment variables are set
-
-#Database configuration - requires all environment variables to be set
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'railway',
-#         'USER': 'postgres',
-#         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-#         'HOST': 'yamabiko.proxy.rlwy.net',
-#         'PORT': '5432',
-#     }
-# }
-
-# Use SQLite for development
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
-# Database configuration
-import os
-
-# Check if we're running on Railway (they set RAILWAY_ENVIRONMENT)
+# Database configuration - Simple SQLite for local development
 DATABASES = {
     'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': os.environ['DB_PASSWORD'],
-        'HOST': 'yamabiko.proxy.rlwy.net',
-        'PORT': '57345',
-        #'PORT': os.environ.get('DB_PORT'),
+        'USER':'postgres',
+        'PASSWORD':os.environ.get('DB_PASSWORD'),
+        'HOST':'ballast.proxy.rlwy.net',
+        'PORT':'58467',
+        
     }
 }
-
-    
-#     # Local development - use SQLite
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': BASE_DIR / 'db.sqlite3',
-#         }
-#     }
-
-
-# Security settings (production only)
-if not DEBUG:
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -171,13 +108,14 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = '/static/'
-
-# Whitenoise for static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles' #new
 
+
+# Static files configuration
+
+# WhiteNoise storage
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' #new
 
 # Media files configuration
 MEDIA_URL = '/media/'
