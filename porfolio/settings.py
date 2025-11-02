@@ -13,8 +13,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
 # Quick-start development settings
-SECRET_KEY = '2nmad6w4k3sv$ymmcd)lfeo3%x6ao=v3zndy3)+s&)@xin&&nn'
-
+#SECRET_KEY = '2nmad6w4k3sv$ymmcd)lfeo3%x6ao=v3zndy3)+s&)@xin&&nn'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
