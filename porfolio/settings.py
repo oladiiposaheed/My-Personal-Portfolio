@@ -18,8 +18,8 @@ SECRET_KEY = '2nmad6w4k3sv$ymmcd)lfeo3%x6ao=v3zndy3)+s&)@xin&&nn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-CSRF_TRUSTED_ORIGINS = []
+ALLOWED_HOSTS = ['my-personal-portfolio-production-f51f.up.railway.app', 'https://my-personal-portfolio-production-f51f.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://my-personal-portfolio-production-f51f.up.railway.app']
 
 # Application definition
 INSTALLED_APPS = [
@@ -77,7 +77,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER':'postgres',
-        'PASSWORD':os.environ.get('DB_PASSWORD'),
+        'PASSWORD':os.environ['DB_PASSWORD'],
         'HOST':'ballast.proxy.rlwy.net',
         'PORT':'58467',
         
