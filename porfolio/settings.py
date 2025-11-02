@@ -5,6 +5,7 @@ Django settings for portfolio project.
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,10 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load environmental variable
 load_dotenv()
 
-# Quick-start development settings
-#SECRET_KEY = '2nmad6w4k3sv$ymmcd)lfeo3%x6ao=v3zndy3)+s&)@xin&&nn'
-SECRET_KEY = os.environ.get('SECRET_KEY')
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECRET KEY
+SECRET_KEY = config('SECRET_KEY')
+
+
 DEBUG = True
 
 ALLOWED_HOSTS = ['my-personal-portfolio-production-f51f.up.railway.app', 'https://my-personal-portfolio-production-f51f.up.railway.app']
