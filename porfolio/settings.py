@@ -16,9 +16,15 @@ load_dotenv()
 # SECRET KEY
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = True
+# DEBUG = True
 
-ALLOWED_HOSTS = ['https://oladiiposaheed.site', 'oladiiposaheed.site', 'oladiiposaheed.site', 'my-personal-portfolio-production-f51f.up.railway.app', 'https://my-personal-portfolio-production-f51f.up.railway.app']
+# ALLOWED_HOSTS = ['https://oladiiposaheed.site', 'oladiiposaheed.site', 'oladiiposaheed.site', 'my-personal-portfolio-production-f51f.up.railway.app', 'https://my-personal-portfolio-production-f51f.up.railway.app']
+# CSRF_TRUSTED_ORIGINS = ['https://oladiiposaheed.site', 'https://my-personal-portfolio-production-f51f.up.railway.app']
+
+
+DEBUG = False
+ALLOWED_HOSTS = ['oladiiposaheed.site', 'www.oladiiposaheed.site', 'my-personal-portfolio-production-f51f.up.railway.app']
+
 CSRF_TRUSTED_ORIGINS = ['https://oladiiposaheed.site', 'https://my-personal-portfolio-production-f51f.up.railway.app']
 
 
