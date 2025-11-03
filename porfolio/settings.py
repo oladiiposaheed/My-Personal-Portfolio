@@ -19,6 +19,11 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = True
 
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
 ALLOWED_HOSTS = ['https://oladiiposaheed.site', 'oladiiposaheed.site', 'my-personal-portfolio-production-f51f.up.railway.app', 'https://my-personal-portfolio-production-f51f.up.railway.app']
 CSRF_TRUSTED_ORIGINS = ['https://oladiiposaheed.site', 'https://my-personal-portfolio-production-f51f.up.railway.app']
 
