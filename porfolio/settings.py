@@ -16,13 +16,7 @@ load_dotenv()
 # SECRET KEY
 SECRET_KEY = config('SECRET_KEY')
 
-
 DEBUG = True
-
-# SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-
 
 ALLOWED_HOSTS = ['https://oladiiposaheed.site', 'oladiiposaheed.site', 'oladiiposaheed.site', 'my-personal-portfolio-production-f51f.up.railway.app', 'https://my-personal-portfolio-production-f51f.up.railway.app']
 CSRF_TRUSTED_ORIGINS = ['https://oladiiposaheed.site', 'https://my-personal-portfolio-production-f51f.up.railway.app']
@@ -116,7 +110,14 @@ USE_TZ = True
 # Static files
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles' #new
+#STATIC_ROOT = BASE_DIR / 'staticfiles' #new
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 
 # Static files configuration
@@ -126,7 +127,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
 
 # Media files configuration
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+#MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Create media directories if they don't exist
 os.makedirs(MEDIA_ROOT / 'profile', exist_ok=True)
