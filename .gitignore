@@ -12,6 +12,12 @@ staticfiles/
 .env
 .env.local
 .env.production
+.env.*
+
+# Secrets
+*.key
+*.pem
+secret.txt
 
 # IDE
 .vscode/
@@ -27,7 +33,7 @@ Thumbs.db
 *.db
 *.sqlite3
 
-# Backups
+# Backup files
 backup/
 *.backup
 
