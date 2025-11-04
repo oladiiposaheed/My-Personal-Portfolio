@@ -27,7 +27,7 @@ DEBUG = False
 
 # CSRF_TRUSTED_ORIGINS = ['https://oladiiposaheed.site', 'https://my-personal-portfolio-production-f51f.up.railway.app']
 
-ALLOWED_HOSTS = ['my-personal-portfolio-production-f51f.up.railway.app']
+ALLOWED_HOSTS = ['my-personal-portfolio-production-f51f.up.railway.app', 'https://my-personal-portfolio-production-f51f.up.railway.app'] 
 
 CSRF_TRUSTED_ORIGINS = ['https://my-personal-portfolio-production-f51f.up.railway.app']
 
@@ -118,9 +118,13 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [BASE_DIR / 'static']
-# STATIC_ROOT = BASE_DIR / 'staticfiles' #new
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles' #new
+
+# WhiteNoise configuration for Railway
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -136,22 +140,22 @@ USE_TZ = True
 
 # Static files configuration for Railway
 # Static files configuration for Railway
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 
-# Create staticfiles directory if it doesn't exist
-os.makedirs(STATIC_ROOT, exist_ok=True)
+# # Create staticfiles directory if it doesn't exist
+# os.makedirs(STATIC_ROOT, exist_ok=True)
 
-# WhiteNoise configuration for Railway
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# # WhiteNoise configuration for Railway
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Add these WhiteNoise settings for better performance
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_ALLOW_ALL_ORIGINS = True
+# WHITENOISE_USE_FINDERS = True
+# WHITENOISE_MANIFEST_STRICT = False
+# WHITENOISE_ALLOW_ALL_ORIGINS = True
 
 # Add this for production
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
