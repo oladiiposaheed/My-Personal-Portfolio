@@ -23,9 +23,13 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 DEBUG = False
-ALLOWED_HOSTS = ['oladiiposaheed.site', 'www.oladiiposaheed.site', 'my-personal-portfolio-production-f51f.up.railway.app']
+# ALLOWED_HOSTS = ['oladiiposaheed.site', 'www.oladiiposaheed.site', 'my-personal-portfolio-production-f51f.up.railway.app']
 
-CSRF_TRUSTED_ORIGINS = ['https://oladiiposaheed.site', 'https://my-personal-portfolio-production-f51f.up.railway.app']
+# CSRF_TRUSTED_ORIGINS = ['https://oladiiposaheed.site', 'https://my-personal-portfolio-production-f51f.up.railway.app']
+
+ALLOWED_HOSTS = ['my-personal-portfolio-production-f51f.up.railway.app']
+
+CSRF_TRUSTED_ORIGINS = ['https://my-personal-portfolio-production-f51f.up.railway.app']
 
 
 # Application definition
