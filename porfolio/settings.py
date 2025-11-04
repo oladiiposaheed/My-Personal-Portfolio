@@ -13,24 +13,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load environmental variable
 load_dotenv()
 
-# SECRET KEY
-SECRET_KEY = config('SECRET_KEY')
+# SECRET KEY - Use default for local development
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-local-development-key-change-in-production')
 
-# DEBUG = True
+# Debug setting for local development
+DEBUG = True
 
-# ALLOWED_HOSTS = ['https://oladiiposaheed.site', 'oladiiposaheed.site', 'oladiiposaheed.site', 'my-personal-portfolio-production-f51f.up.railway.app', 'https://my-personal-portfolio-production-f51f.up.railway.app']
-# CSRF_TRUSTED_ORIGINS = ['https://oladiiposaheed.site', 'https://my-personal-portfolio-production-f51f.up.railway.app']
+# Allow localhost for development
+ALLOWED_HOSTS = ['my-personal-portfolio-production-c164.up.railway.app', 'https://my-personal-portfolio-production-c164.up.railway.app']
 
-
-DEBUG = False
-# ALLOWED_HOSTS = ['oladiiposaheed.site', 'www.oladiiposaheed.site', 'my-personal-portfolio-production-f51f.up.railway.app']
-
-# CSRF_TRUSTED_ORIGINS = ['https://oladiiposaheed.site', 'https://my-personal-portfolio-production-f51f.up.railway.app']
-
-ALLOWED_HOSTS = ['my-personal-portfolio-production-f51f.up.railway.app', 'https://my-personal-portfolio-production-f51f.up.railway.app'] 
-
-CSRF_TRUSTED_ORIGINS = ['https://my-personal-portfolio-production-f51f.up.railway.app']
-
+CSRF_TRUSTED_ORIGINS = ['https://my-personal-portfolio-production-c164.up.railway.app']
 
 # Application definition
 INSTALLED_APPS = [
@@ -48,7 +40,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # new
+        'whitenoise.middleware.WhiteNoiseMiddleware', # new
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -57,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# FIXED: Use 'porfolio' to match your actual project name
+# Use 'porfolio' to match your actual project name
 ROOT_URLCONF = 'porfolio.urls'
 
 TEMPLATES = [
@@ -77,23 +69,29 @@ TEMPLATES = [
     },
 ]
 
-# FIXED: Use 'porfolio' to match your actual project name
+# Use 'porfolio' to match your actual project name
 WSGI_APPLICATION = 'porfolio.wsgi.application'
 
-# Database configuration - Simple SQLite for local development
-DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER':'postgres',
-        'PASSWORD':os.environ['DB_PASSWORD'],
-        'HOST':'ballast.proxy.rlwy.net',
-        'PORT':'58467',
-        
+#Database configuration - SQLite for local development
+import os
+if os.environ.get("USE_SQLITE", "False") == "True":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'railway',
+            'USER': 'postgres',
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
+            'HOST': 'gondola.proxy.rlwy.net',
+            'PORT': '15090',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -117,56 +115,12 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
+# Static files configuration
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles' #new
 
-# WhiteNoise configuration for Railway
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-
-
-# Static files configuration
-
-# WhiteNoise storage
-
-# Static files configuration for Railway
-# Static files configuration for Railway
-# STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
-
-# # Create staticfiles directory if it doesn't exist
-# os.makedirs(STATIC_ROOT, exist_ok=True)
-
-# # WhiteNoise configuration for Railway
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Add these WhiteNoise settings for better performance
-# WHITENOISE_USE_FINDERS = True
-# WHITENOISE_MANIFEST_STRICT = False
-# WHITENOISE_ALLOW_ALL_ORIGINS = True
-
-# Add this for production
-#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# WhiteNoise configuration for Railway
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Add these WhiteNoise settings
-# WHITENOISE_USE_FINDERS = True
-# WHITENOISE_MANIFEST_STRICT = False
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' #new
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files configuration
 MEDIA_URL = '/media/'
@@ -186,6 +140,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Static files finders
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
