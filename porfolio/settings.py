@@ -20,8 +20,12 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-local-development-key
 DEBUG = True
 
 # Allow localhost for development
-ALLOWED_HOSTS = ['my-personal-portfolio-production-c164.up.railway.app', 'https://my-personal-portfolio-production-c164.up.railway.app']
-
+#ALLOWED_HOSTS = ['my-personal-portfolio-production-c164.up.railway.app', 'https://my-personal-portfolio-production-c164.up.railway.app']
+ALLOWED_HOSTS = [
+    'my-personal-portfolio-production-c164.up.railway.app',
+    'localhost',
+    '127.0.0.1'
+]
 CSRF_TRUSTED_ORIGINS = ['https://my-personal-portfolio-production-c164.up.railway.app']
 
 # Application definition
